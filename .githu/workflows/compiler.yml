@@ -1,0 +1,22 @@
+name: Compilation Menu PS3
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Récupérer le code
+      uses: actions/checkout@v4
+
+    - name: Compiler via Docker officiel
+      run: |
+        docker run --rm -v ${{ github.workspace }}:/data -w /data ps3dev/ps3dev:latest make
+
+    - name: Sauvegarder le fichier SPRX
+      uses: actions/artifacts@v4
+      with:
+        name: Mon-Menu-PS3
+        path: |
+          *.sprx
+          ParishedSPRX/*.sprx
+        

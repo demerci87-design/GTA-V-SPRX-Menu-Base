@@ -7,7 +7,7 @@ CFLAGS = -O2 -fno-builtin-printf -fno-exceptions -fno-rtti -std=c++11
 SOURCES := $(wildcard *.cpp)
 OBJECTS := $(SOURCES:.cpp=.o)
 
-TARGET = ADF_Menu.sprx
+TARGET = ParishedSPRX.sprx
 
 all: $(TARGET)
 
