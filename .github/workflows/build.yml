@@ -6,9 +6,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
+      # 1. Installation des outils de compilation PS3
+      - name: Install PS3 Toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-powerpc-eabi g++-powerpc-eabi
+          
+      # 2. Compilation
       - name: Compile
         run: |
           make
+          
+      # 3. Upload
       - name: Upload SPRX
         uses: actions/upload-artifact@v4
         with:
