@@ -4,8 +4,8 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    # C'est cette ligne qui fait toute la magie :
-    container: ps3dev/ps3dev:latest
+    # On utilise la nouvelle adresse officielle de la communauté ps3dev
+    container: ghcr.io/ps3dev/ps3dev:master
 
     steps:
       - uses: actions/checkout@v4
