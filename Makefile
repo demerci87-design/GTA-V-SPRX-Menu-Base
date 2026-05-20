@@ -7,8 +7,9 @@ OBJCOPY = ppu-objcopy
 CFLAGS = -O2 -ffunction-sections -fdata-sections -fno-builtin-printf -fno-exceptions -fno-rtti -std=c++11
 LDFLAGS = -shared -Wl,--no-undefined -Wl,--gc-sections
 
-# Liste de tes fichiers sources
-SOURCES = main.cpp menu.cpp menufuncs.cpp
+# --- ICI LA MODIFICATION IMPORTANTE ---
+# On retire main.cpp de la liste
+SOURCES = menu.cpp menufuncs.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 
 TARGET = ADF_Menu.sprx
