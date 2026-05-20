@@ -1,39 +1,32 @@
 #pragma once
-#include "Parished.h"
 
-struct Menu;
+// ========================================================================= //
+//                          ADF MOD MENU - HEADER                            //
+// ========================================================================= //
 
-enum eMenus {
-	MainMenu,
-	SubMenu1,
+class Menu {
+public:
+    // Affiche une option simple dans le menu
+    static bool Option(const char* text);
+
+    // Initialisation du menu
+    static void Init();
+
+    // Affiche le titre en haut du menu
+    static void Title(const char* title);
+
+    // Gère le dessin du rectangle du menu
+    static void DrawRect(float x, float y, float w, float h, int r, int g, int b, int a);
+
+    // Gère l'affichage du texte
+    static void DrawText(const char* text, float x, float y, float size, int r, int g, int b, int a);
+
+    // Déplacement dans le menu
+    static void MoveCursor();
+    
+    // Fermeture du menu
+    static void Close();
+
+    // Gestion des inputs manette
+    static bool IsKeyPressed(int key);
 };
-
-enum CallType {
-	CALL_NONE,
-	CALL_STRING,
-	CALL_INT,
-	CALL_SLIDER,
-};
-
-
-struct Menu {
-	int parentMenu;
-	const char * title;
-	const char * text;
-	const char * sliderText;
-	char ** sliderArray;
-	void(*func0)();
-	void(*func1)(const char * arg);
-	void(*func2)(int arg);
-	void(*func3)(float val);
-	const char * func1arg;
-	int func2arg;
-	CallType calltype;
-	bool isSlider;
-	float minVal;
-	float maxVal;
-	float curVal;
-	float scaleVal;
-};
-
-extern Menu menu[20][20];
