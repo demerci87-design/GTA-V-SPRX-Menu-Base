@@ -1,12 +1,16 @@
 #include "menu.h"
 #include "menufuncs.h"
 
-// Déclaration de la structure du menu
-Menu menu[20][20];
+// Le "Main" est maintenant intégré ici pour simplifier le projet
+void Main() {
+    while (true) {
+        CheckMenu();
+        GAMEPLAY::WAIT(0);
+    }
+}
 
-// Fonction principale qui va lire les boutons du menu
+// Fonction qui lit tes boutons
 void CheckMenu() {
-    
     // ========================================================================= //
     //                          ADF MOD MENU - LES BOUTONS                       //
     // ========================================================================= //
@@ -31,5 +35,4 @@ void CheckMenu() {
 
     if (Menu::Option("Teleportation : Aeroport")) { ADF_Lieu_Aeroport(); }
     if (Menu::Option("Teleportation : Mont Chiliad")) { ADF_Lieu_MontChiliad(); }
-
 }
