@@ -1,16 +1,11 @@
-# Makefile pour le Mod Menu ADF PS3
-
-CC = ppu-gcc
+# Makefile universel - Ne change rien ici
 CXX = ppu-g++
-OBJCOPY = ppu-objcopy
-
-CFLAGS = -O2 -ffunction-sections -fdata-sections -fno-builtin-printf -fno-exceptions -fno-rtti -std=c++11
 LDFLAGS = -shared -Wl,--no-undefined -Wl,--gc-sections
+CFLAGS = -O2 -fno-builtin-printf -fno-exceptions -fno-rtti -std=c++11
 
-# --- ICI LA MODIFICATION IMPORTANTE ---
-# On retire main.cpp de la liste
-SOURCES = menu.cpp menufuncs.cpp
-OBJECTS = $(SOURCES:.cpp=.o)
+# Cette ligne trouve automatiquement tous tes fichiers .cpp
+SOURCES := $(wildcard *.cpp)
+OBJECTS := $(SOURCES:.cpp=.o)
 
 TARGET = ADF_Menu.sprx
 
@@ -21,6 +16,3 @@ $(TARGET): $(OBJECTS)
 
 %.o: %.cpp
 	$(CXX) $(CFLAGS) -c -o $@ $<
-
-clean:
-	rm -f $(OBJECTS) $(TARGET)
