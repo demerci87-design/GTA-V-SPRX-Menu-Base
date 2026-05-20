@@ -7,22 +7,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Installer Compilateur PS3
+      - name: Préparer les outils de compilation
         run: |
-          # Mise à jour et installation des outils de base
           sudo apt-get update
-          sudo apt-get install -y build-essential curl
-          
-          # On télécharge les binaires pré-compilés de la toolchain (plus simple)
-          curl -L https://github.com/ps3dev/ps3toolchain/releases/latest/download/ps3dev-linux.tar.gz -o ps3dev.tar.gz
-          tar -xzf ps3dev.tar.gz
-          echo "$(pwd)/ps3dev/bin" >> $GITHUB_PATH
+          sudo apt-get install -y build-essential bison flex texinfo libgmp-dev libmpfr-dev libmpc-dev libssl-dev
+          # On clone la toolchain que tu as trouvée
+          git clone https://github.com/ps3dev/ps3toolchain.git
+          cd ps3toolchain
+          # On lance la construction (ça va créer ppu-g++ pour toi)
+          ./toolchain.sh
+          # On ajoute les outils au chemin système
+          echo "$(pwd)/bin" >> $GITHUB_PATH
 
-      - name: Compilation
+      - name: Compiler le menu
         run: |
           make
 
-      - name: Récupérer le menu
+      - name: Récupérer le fichier .sprx
         uses: actions/upload-artifact@v4
         with:
           name: MonMenuPS3
