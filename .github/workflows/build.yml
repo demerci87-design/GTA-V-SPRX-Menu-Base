@@ -7,7 +7,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # On utilise l'installateur automatique de la communauté
-      - name: Setup PS3Dev Toolchain
+      # Étape 1 : On télécharge les outils depuis l'archive que tu as trouvée
+      - name: Download PS3 SDK Tools
         run: |
-          docker run --rm -v ${{ github.workspace }}:/src -w /src ghcr.io/ps3dev/ps3dev:latest make
+          sudo apt-get update && sudo apt-get install -y p7zip-full
+          curl -L -o ps3_sdk.7z "https://archive.org/download/ps3-4.75-sdk/PS3%204.75%20SDK%20Offline%20Installer.7z"
+          7z x ps3_sdk.7z -o./ps3_sdk_extracted
+          
+          # On ajoute les outils au système pour que la commande "make" les trouve
+          echo "$(pwd)/ps3_sdk_extracted/host-linux/bin" >> $GITHUB_PATH
+
+      # Étape 2 : Compilation automatique
+      - name: Compile
+        run: |
+          make
+
+      # Étape 3 : Récupération du fichier final
+      - name: Upload SPRX
+        uses: actions/upload-artifact@v4
+        with:
+          name: MonMenuPS3
+          path: ADF_Menu.sprx
