@@ -7,25 +7,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Étape 1 : Téléchargement et extraction (Déjà validé au vert !)
-      - name: Download PS3 SDK Tools
+      # Étape 1 : Téléchargement et extraction (Déjà validé à 100% chez toi)
+      - name: Télécharger les outils SDK PS3
         run: |
           sudo apt-get update && sudo apt-get install -y p7zip-full
           curl -L -o ps3_sdk.7z "https://archive.org/download/ps3-4.75-sdk/PS3%204.75%20SDK%20Offline%20Installer.7z"
           7z x ps3_sdk.7z -o./ps3_sdk_extracted
           
-          # Correction du chemin exact vers le compilateur ppu-g++ de Sony
-          echo "$(pwd)/ps3_sdk_extracted/cell/host-linux-x86/bin" >> $GITHUB_PATH
+          # Ligne magique : trouve le dossier contenant ppu-g++ et l'ajoute au PATH
+          COMPILATOR_PATH=$(dirname $(find $(pwd)/ps3_sdk_extracted -name "ppu-g++" | head -n 1))
+          echo "$COMPILATOR_PATH" >> $GITHUB_PATH
 
-      # Étape 2 : Compilation automatique
-      - name: Compile
+      # Étape 2 : Compilation
+      - name: Compiler
         run: |
           make
 
       # Étape 3 : Récupération du fichier final
-      - name: Upload SPRX
+      - name: Téléverser SPRX
         uses: actions/upload-artifact@v4
         with:
           name: MonMenuPS3
           path: ADF_Menu.sprx
-          
