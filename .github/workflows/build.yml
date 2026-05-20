@@ -4,20 +4,19 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Cette ligne fait toute la différence : on utilise un environnement PS3 prêt à l'emploi
+    container: ghcr.io/ps3dev/ps3dev:latest
+    
     steps:
       - uses: actions/checkout@v4
 
-      # Étape 1 : Téléchargement et extraction (Ça, ça marche nickel)
-      - name: Télécharger les outils SDK PS3
+      - name: Compiler avec PS3DEV
         run: |
-          sudo apt-get update && sudo apt-get install -y p7zip-full
-          curl -L -o ps3_sdk.7z "https://archive.org/download/ps3-4.75-sdk/PS3%204.75%20SDK%20Offline%20Installer.7z"
-          7z x ps3_sdk.7z -o./ps3_sdk_extracted
+          # On exécute simplement ton Makefile
+          make
 
-      # Étape 2 : On liste le contenu pour trouver le bon chemin
-      - name: Inspecter les dossiers du SDK
-        run: |
-          echo "=== CONTENU DU DOSSIER EXTRAIT ==="
-          ls -la ./ps3_sdk_extracted
-          echo "=== RECHERCHE DES COMPILATEURS ==="
-          find ./ps3_sdk_extracted -type d -name "*bin*" || true
+      - name: Récupérer le menu
+        uses: actions/upload-artifact@v4
+        with:
+          name: MonMenuPS3
+          path: ADF_Menu.sprx
