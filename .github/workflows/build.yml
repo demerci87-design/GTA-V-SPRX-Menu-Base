@@ -4,18 +4,10 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    # On utilise un conteneur PS3Dev alternatif et fonctionnel
-    container: svengoni/ps3dev:latest
-
     steps:
       - uses: actions/checkout@v4
 
-      - name: Compile
+      # On utilise l'installateur automatique de la communauté
+      - name: Setup PS3Dev Toolchain
         run: |
-          make
-
-      - name: Upload SPRX
-        uses: actions/upload-artifact@v4
-        with:
-          name: MonMenuPS3
-          path: ADF_Menu.sprx
+          docker run --rm -v ${{ github.workspace }}:/src -w /src ghcr.io/ps3dev/ps3dev:latest make
