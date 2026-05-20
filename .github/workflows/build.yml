@@ -4,15 +4,22 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    # Cette ligne fait toute la différence : on utilise un environnement PS3 prêt à l'emploi
-    container: ghcr.io/ps3dev/ps3dev:latest
-    
     steps:
       - uses: actions/checkout@v4
 
-      - name: Compiler avec PS3DEV
+      - name: Installer Compilateur PS3
         run: |
-          # On exécute simplement ton Makefile
+          # Mise à jour et installation des outils de base
+          sudo apt-get update
+          sudo apt-get install -y build-essential curl
+          
+          # On télécharge les binaires pré-compilés de la toolchain (plus simple)
+          curl -L https://github.com/ps3dev/ps3toolchain/releases/latest/download/ps3dev-linux.tar.gz -o ps3dev.tar.gz
+          tar -xzf ps3dev.tar.gz
+          echo "$(pwd)/ps3dev/bin" >> $GITHUB_PATH
+
+      - name: Compilation
+        run: |
           make
 
       - name: Récupérer le menu
