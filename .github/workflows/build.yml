@@ -5,13 +5,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Compile
         run: |
-          # Lance la commande définie dans ton Makefile
           make
       - name: Upload SPRX
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: MonMenuPS3
           path: ADF_Menu.sprx
